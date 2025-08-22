@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mysql://cakeuser:cakepass@db:3306/fatture
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: fatture
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: cakeuser
+      MYSQL_PASSWORD: cakepass
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+
