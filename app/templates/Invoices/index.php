@@ -37,7 +37,12 @@
                             </span>
                         </td>
                         <td class="actions">
-                            <?= $this->Html->link(__("Ver"), ["action" => "view", $invoice->id], ["class" => "button button-outline"]) ?>
+                            <?= $this->Html->link(__('Ver'), ['action' => 'view', $invoice->id], ['class' => 'button button-outline']) ?>
+                            <?= $this->Html->link(__('Editar'), ['action' => 'edit', $invoice->id], ['class' => 'button button-outline']) ?>
+                            <?= $this->Form->postLink(__('Eliminar'), ['action' => 'delete', $invoice->id], [
+                                'confirm' => __('¿Estás seguro de que quieres eliminar la factura {0}?', $invoice->numero_factura),
+                                'class' => 'button button-outline button-danger'
+                            ]) ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
