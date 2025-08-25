@@ -17,7 +17,7 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
+    'debug' => false,
 
     /*
      * Configure basic information about the application.
@@ -437,22 +437,8 @@ return [
      *  - `variablesPanelMaxDepth` - Defines how many levels of nested data should be shown in the variables tab.
      *     Default is 5. WARNING: Increasing the max depth level can lead to an out of memory error.
      */
-    'DebugKit' => [
-        'forceEnable' => filter_var(env('DEBUG_KIT_FORCE_ENABLE', false), FILTER_VALIDATE_BOOLEAN),
-        'safeTld' => env('DEBUG_KIT_SAFE_TLD', null),
-        'ignoreAuthorization' => env('DEBUG_KIT_IGNORE_AUTHORIZATION', false),
-    ],
 
-    /**
-     * TestSuite configuration.
-     *
-     * ## Options
-     *
-     *  - `errorLevel` - Defaults to `E_ALL`. Can be set to `false` to disable overwrite error level.
-     *  - `fixtureStrategy` - Defaults to TruncateStrategy. Can be set to any class implementing FixtureStrategyInterface.
-     */
-    'TestSuite' => [
-        'errorLevel' => null,
-        'fixtureStrategy' => null,
+    'DebugKit' => [
+        'forceEnable' => false,
     ],
 ];
