@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CakePHP Fatture API - Backend Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">
+                🧾 CakePHP Fatture API
+            </h1>
+            <p class="text-gray-600 mb-8">
+                Backend API funcionando correctamente en AWS Elastic Beanstalk
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+                    <h3 class="font-bold text-green-800 mb-2">✅ Health Check</h3>
+                    <p class="text-green-700">Sistema funcionando correctamente</p>
+                    <a href="/health.php" class="text-green-600 hover:text-green-800 text-sm">
+                        → Ver health.php
+                    </a>
+                </div>
+                
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="font-bold text-blue-800 mb-2">📊 API Endpoints</h3>
+                    <p class="text-blue-700">Datos de facturas disponibles</p>
+                    <a href="/api/invoices.json" class="text-blue-600 hover:text-blue-800 text-sm">
+                        → Ver API JSON
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-8 p-4 bg-gray-100 rounded">
+                <h3 class="font-bold mb-2">🔗 Endpoints disponibles:</h3>
+                <ul class="text-sm space-y-1">
+                    <li>• <code>GET /health.php</code> - Health check</li>
+                    <li>• <code>GET /api/invoices.json</code> - Lista de facturas</li>
+                    <li>• <code>GET /api/stats.json</code> - Estadísticas</li>
+                </ul>
+            </div>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-500 text-sm">
+                    🚀 CakePHP Backend desplegado en AWS • Ready para conectar con React Frontend
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

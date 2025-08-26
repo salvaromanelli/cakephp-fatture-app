@@ -1,0 +1,16 @@
+{
+  "success": true,
+  "data": {
+    "total_facturas": 248,
+    "total_importe": "54290.75",
+    "facturas_pagadas": 201,
+    "facturas_pendientes": 47,
+    "crecimiento_mensual": 18.5,
+    "ultimo_mes": "€4,520.30",
+    "promedio_factura": "€218.91"
+  },
+  "meta": {
+    "generated_at": "2024-08-26T12:00:00Z",
+    "period": "last_12_months"
+  }
+}

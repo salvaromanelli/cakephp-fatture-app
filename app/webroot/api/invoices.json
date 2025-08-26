@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "message": "CakePHP Fatture API - Demo data",
+  "data": [
+    {
+      "id": 1,
+      "numero": "FACT-2024-001",
+      "cliente": "Empresa Demo SL",
+      "total": "1250.00",
+      "fecha": "2024-08-26",
+      "descripcion": "Desarrollo aplicación web CakePHP + React",
+      "estado": "pagada"
+    },
+    {
+      "id": 2,
+      "numero": "FACT-2024-002", 
+      "cliente": "StartupTech Inc",
+      "total": "890.50",
+      "fecha": "2024-08-25",
+      "descripcion": "Consultoría técnica y deployment AWS",
+      "estado": "pagada"
+    },
+    {
+      "id": 3,
+      "numero": "FACT-2024-003",
+      "cliente": "Digital Solutions Agency",
+      "total": "2100.00",
+      "fecha": "2024-08-24", 
+      "descripcion": "Desarrollo API REST con integración base de datos",
+      "estado": "pendiente"
+    },
+    {
+      "id": 4,
+      "numero": "FACT-2024-004",
+      "cliente": "Innovation Labs",
+      "total": "1575.25",
+      "fecha": "2024-08-23",
+      "descripcion": "Arquitectura cloud AWS + Elastic Beanstalk",
+      "estado": "pagada"
+    }
+  ],
+  "meta": {
+    "total_facturas": 4,
+    "total_importe": "5815.75",
+    "moneda": "EUR",
+    "last_update": "2024-08-26T12:00:00Z",
+    "api_version": "1.0",
+    "backend": "CakePHP on AWS Elastic Beanstalk"
+  }
+}
