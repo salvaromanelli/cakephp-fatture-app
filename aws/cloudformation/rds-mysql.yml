@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'RDS MySQL instance for CakePHP Fatture App'
+
+Parameters:
+  DBInstanceClass:
+    Type: String
+    Default: db.t3.micro  #Free Tier elegible
+    AllowedValues: [db.t3.micro]
+    Description: RDS instance type (Free Tier)
+  
+  DBAllocatedStorage:
+    Type: Number
+    Default: 20
+    MinValue: 20
+    MaxValue: 100
+    Description: Database storage size in GB
+  
+  DBUsername:
+    Type: String
+    Default: cakephp_user
+    Description: Database username
+  
+  DBPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: Database password (minimum 8 characters)
+
+Resources:
+  DatabaseInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub ${EnvironmentName}-cakephp-db
+      DBInstanceClass: db.t3.micro        # Free Tier
+      Engine: mysql
+      EngineVersion: '8.0.35'
+      AllocatedStorage: 20                # Free Tier hasta 20GB
+      StorageType: gp2                    # Free Tier (no gp3)
+      StorageEncrypted: false             # Free Tier no incluye encryption
+      
+      MultiAZ: false                      # Free Tier es single-AZ
+      BackupRetentionPeriod: 0            # Sin backups para ahorrar espacio
+      MonitoringInterval: 0               # Sin enhanced monitoring
+      EnablePerformanceInsights: false    # Sin Performance Insights
+      DeletionProtection: false
+      DeleteAutomatedBackups: true
+
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for RDS MySQL
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref AppSecurityGroup
+      Tags:
+        - Key: Name
+          Value: CakePHP-DB-SecurityGroup
+
+  DBInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: cakephp-fatture-db
+      DBInstanceClass: !Ref DBInstanceClass
+      Engine: mysql
+      EngineVersion: '8.0'
+      AllocatedStorage: !Ref DBAllocatedStorage
+      StorageType: gp2
+      StorageEncrypted: true
+      
+      DBName: cakephp_db
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      
+      VPCSecurityGroups:
+        - !Ref DBSecurityGroup
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      
+      BackupRetentionPeriod: 7
+      MultiAZ: false
+      PubliclyAccessible: false
+      
+      DeletionProtection: false
+      DeleteAutomatedBackups: true
+      
+      Tags:
+        - Key: Name
+          Value: CakePHP-Fatture-DB
+        - Key: Environment
+          Value: Production
+
+Outputs:
+  DBEndpoint:
+    Description: RDS MySQL Endpoint
+    Value: !GetAtt DBInstance.Endpoint.Address
+    Export:
+      Name: !Sub "${AWS::StackName}-DB-Endpoint"
+  
+  DBPort:
+    Description: RDS MySQL Port
+    Value: !GetAtt DBInstance.Endpoint.Port
+    Export:
+      Name: !Sub "${AWS::StackName}-DB-Port"

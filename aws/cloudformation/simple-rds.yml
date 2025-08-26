@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Simple RDS MySQL for CakePHP Demo'
+
+Resources:
+  DemoDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub "${AWS::StackName}-db"
+      DBInstanceClass: db.t3.micro
+      Engine: mysql
+      EngineVersion: '8.0.35'
+      AllocatedStorage: 20
+      StorageType: gp2
+      StorageEncrypted: false
+      
+      DBName: cakephp_demo
+      MasterUsername: demo_user
+      MasterUserPassword: Demo123456!
+      
+      BackupRetentionPeriod: 0
+      MultiAZ: false
+      PubliclyAccessible: true
+      DeletionProtection: false
+      DeleteAutomatedBackups: true
+      
+      VPCSecurityGroups:
+        - !Ref DBSecurityGroup
+
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Sub "${AWS::StackName} RDS Security Group"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
+          Description: MySQL access for demo
+
+Outputs:
+  DatabaseEndpoint:
+    Description: RDS Database Endpoint
+    Value: !GetAtt DemoDatabase.Endpoint.Address
+    Export:
+      Name: !Sub "${AWS::StackName}-db-endpoint"
+      
+  DatabaseURL:
+    Description: Full Database Connection URL
+    Value: !Sub 
+      - "mysql://demo_user:Demo123456!@${DBEndpoint}:3306/cakephp_demo"
+      - DBEndpoint: !GetAtt DemoDatabase.Endpoint.Address

@@ -1,47 +1,51 @@
 FROM php:8.2-apache
 
-# Instalar dependencias del sistema
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libicu-dev \
-    zip \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/webroot
 
-# Instalar extensiones de PHP
-RUN docker-php-ext-install \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    intl
+# Arreglar repositorios y limpiar cache
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt-get clean && \
+    apt-get update --fix-missing
 
-# Habilitar mod_rewrite de Apache
-RUN a2enmod rewrite
+# Instalar dependencias básicas (sin supervisor y cron que no necesitas)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl zip unzip \
+    libpng-dev libjpeg-dev libfreetype6-dev \
+    libicu-dev libzip-dev libonig-dev \
+    default-mysql-client \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Instalar extensiones PHP
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install -j$(nproc) pdo_mysql mbstring gd intl zip opcache
+
+# Configurar Apache
+RUN a2enmod rewrite headers && \
+    sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Configurar directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar archivos de la aplicación
-COPY app/ .
+# Copiar aplicación
+COPY app/ ./
 
-# Instalar dependencias de Composer
-RUN composer install --no-dev --optimize-autoloader
+# Instalar dependencias de Composer si existe composer.json
+RUN if [ -f composer.json ]; then \
+    composer install --no-dev --optimize-autoloader --no-interaction || true; \
+    fi
 
 # Configurar permisos
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/webroot
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html && \
+    mkdir -p tmp logs && \
+    chmod -R 777 tmp logs
 
-# Configurar Apache
-COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+# Health check
+RUN echo '<?php http_response_code(200); echo "healthy"; ?>' > webroot/health.php
 
 EXPOSE 80
+CMD ["apache2-foreground"]

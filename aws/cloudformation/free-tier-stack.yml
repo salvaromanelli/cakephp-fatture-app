@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Free Tier RDS MySQL for CakePHP Demo'
+
+Resources:
+  # Security Group para RDS
+  DBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: RDS MySQL Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 0.0.0.0/0
+          Description: MySQL access (demo only)
+
+  # RDS Free Tier
+  DemoDatabase:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: cakephp-demo-db
+      DBInstanceClass: db.t3.micro
+      Engine: mysql
+      EngineVersion: '8.0.35'
+      AllocatedStorage: 20
+      StorageType: gp2
+      StorageEncrypted: false
+      
+      DBName: cakephp_demo
+      MasterUsername: demo_user
+      MasterUserPassword: Demo123456!
+      
+      VPCSecurityGroups:
+        - !Ref DBSecurityGroup
+      
+      BackupRetentionPeriod: 0
+      MultiAZ: false
+      PubliclyAccessible: true
+      DeletionProtection: false
+      DeleteAutomatedBackups: true
+
+Outputs:
+  DatabaseEndpoint:
+    Description: RDS Endpoint
+    Value: !GetAtt DemoDatabase.Endpoint.Address
+    Export:
+      Name: demo-db-endpoint
