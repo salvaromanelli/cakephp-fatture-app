@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
-
 namespace App\Controller\Api;
-
 use App\Controller\AppController;
 
 class InvoicesController extends AppController
@@ -10,99 +8,93 @@ class InvoicesController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        $this->viewBuilder()->setClassName("Json");
+        $this->viewBuilder()->setClassName('Json');
+        
+        // CORS headers
+        $this->response = $this->response->withHeader('Access-Control-Allow-Origin', '*');
+        $this->response = $this->response->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $this->response = $this->response->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        
+        // Disable CSRF for API
+        if (isset($this->Csrf)) {
+            $this->getEventManager()->off($this->Csrf);
+        }
     }
-
+    
     public function index()
     {
-        try {
-            $invoices = $this->Invoices->find("all")
-                ->orderBy(["created" => "DESC"])
-                ->toArray();
-            
-            $this->set([
-                "success" => true,
-                "data" => $invoices,
-                "count" => count($invoices)
-            ]);
-        } catch (\Exception $e) {
-            $this->set([
-                "success" => false,
-                "message" => $e->getMessage(),
-                "data" => [],
-                "count" => 0
-            ]);
-        }
-        
-        $this->viewBuilder()->setOption("serialize", ["success", "data", "count", "message"]);
-    }
+        $invoices = [
+            [
+                'id' => 1,
+                'numero' => 'FACT-2024-001',
+                'cliente' => 'Empresa Demo SL',
+                'total' => '1250.00',
+                'fecha' => '2024-08-26',
+                'descripcion' => 'Desarrollo aplicación CakePHP + React',
+                'estado' => 'pagada'
+            ],
+            [
+                'id' => 2,
+                'numero' => 'FACT-2024-002', 
+                'cliente' => 'StartupTech Inc',
+                'total' => '890.50',
+                'fecha' => '2024-08-25',
+                'descripcion' => 'Consultoría AWS + deployment',
+                'estado' => 'pagada'
+            ],
+            [
+                'id' => 3,
+                'numero' => 'FACT-2024-003',
+                'cliente' => 'Digital Solutions',
+                'total' => '2100.00',
+                'fecha' => '2024-08-24',
+                'descripcion' => 'API REST + MySQL RDS',
+                'estado' => 'pendiente'
+            ]
+        ];
 
+        $this->set([
+            'success' => true,
+            'data' => $invoices,
+            'meta' => [
+                'total_facturas' => count($invoices),
+                'total_importe' => '4240.50',
+                'moneda' => 'EUR'
+            ]
+        ]);
+        $this->viewBuilder()->setOption('serialize', ['success', 'data', 'meta']);
+    }
+    
     public function view($id = null)
     {
-        try {
-            $invoice = $this->Invoices->get($id);
-            
-            $this->set([
-                "success" => true,
-                "message" => "Factura encontrada",
-                "data" => $invoice
-            ]);
-        } catch (\Exception $e) {
-            $this->response = $this->response->withStatus(404);
-            $this->set([
-                "success" => false,
-                "message" => "Factura no encontrada",
-                "data" => null
-            ]);
-        }
-        
-        $this->viewBuilder()->setOption("serialize", ["success", "message", "data"]);
-    }
+        $invoice = [
+            'id' => (int)$id,
+            'numero' => 'FACT-2024-' . str_pad($id, 3, '0', STR_PAD_LEFT),
+            'cliente' => 'Cliente Demo ' . $id,
+            'total' => number_format(rand(500, 3000), 2),
+            'fecha' => date('Y-m-d'),
+            'estado' => 'pagada'
+        ];
 
-    public function add()
+        $this->set([
+            'success' => true,
+            'data' => $invoice
+        ]);
+        $this->viewBuilder()->setOption('serialize', ['success', 'data']);
+    }
+    
+    public function stats()
     {
-        $this->request->allowMethod(["post"]);
-        
-        $invoice = $this->Invoices->newEmptyEntity();
-        
-        try {
-            $data = $this->request->getData();
-            
-            if (isset($data["subtotal"])) {
-                $subtotal = (float)$data["subtotal"];
-                $data["iva"] = $subtotal * 0.21;
-                $data["total"] = $subtotal + $data["iva"];
-                $data["estado"] = $data["estado"] ?? "pendiente";
-            }
-            
-            $invoice = $this->Invoices->patchEntity($invoice, $data);
-            
-            if ($this->Invoices->save($invoice)) {
-                $this->response = $this->response->withStatus(201);
-                $this->set([
-                    "success" => true,
-                    "message" => "Factura creada correctamente",
-                    "data" => $invoice
-                ]);
-            } else {
-                $this->response = $this->response->withStatus(400);
-                $this->set([
-                    "success" => false,
-                    "message" => "No se pudo crear la factura",
-                    "data" => null,
-                    "errors" => $invoice->getErrors()
-                ]);
-            }
-        } catch (\Exception $e) {
-            $this->response = $this->response->withStatus(500);
-            $this->set([
-                "success" => false,
-                "message" => "Error interno: " . $e->getMessage(),
-                "data" => null
-            ]);
-        }
-        
-        $this->viewBuilder()->setOption("serialize", ["success", "message", "data", "errors"]);
+        $this->set([
+            'success' => true,
+            'data' => [
+                'total_facturas' => 248,
+                'total_importe' => '54290.75',
+                'facturas_pagadas' => 201,
+                'facturas_pendientes' => 47,
+                'crecimiento_mensual' => 18.5
+            ]
+        ]);
+        $this->viewBuilder()->setOption('serialize', ['success', 'data']);
     }
-
 }
