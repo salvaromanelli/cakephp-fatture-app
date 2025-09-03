@@ -1,0 +1,19 @@
+<?php
+return [
+    'debug' => false,
+    'App' => [
+        'namespace' => 'App',
+        'encoding' => 'UTF-8',
+        'defaultLocale' => 'en_US',
+        'defaultTimezone' => 'UTC',
+    ],
+    'Security' => [
+        'salt' => '4cae913d40f8b18c0a79fa6e4365ef954b7efd93edda537c8742634369e18a6e',
+    ],
+    'Error' => [
+        'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
+        'exceptionRenderer' => 'Cake\Error\ExceptionRenderer',
+        'log' => true,
+        'trace' => true,
+    ],
+];

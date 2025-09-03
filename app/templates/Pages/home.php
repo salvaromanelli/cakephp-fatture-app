@@ -1,59 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CakePHP Fatture API</title>
+    <title>CakePHP Fatture API ✅</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial; margin: 40px; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .status { padding: 20px; background: #d4edda; border-left: 4px solid #28a745; margin: 20px 0; }
-        .endpoint { background: #e9ecef; padding: 10px; margin: 10px 0; border-radius: 4px; font-family: monospace; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
-        .card { background: #f8f9fa; padding: 20px; border-radius: 4px; }
+        body{font-family:system-ui;margin:0;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .card{background:white;border-radius:12px;padding:40px;max-width:700px;box-shadow:0 20px 40px rgba(0,0,0,0.1)}
+        .status{background:#d4edda;color:#155724;padding:20px;border-radius:8px;margin:20px 0;border-left:4px solid #28a745}
+        .endpoints{background:#f8f9fa;padding:20px;border-radius:8px;margin:20px 0}
+        .endpoint{font-family:monospace;background:#e9ecef;padding:8px;margin:8px 0;border-radius:4px}
+        h1{color:#333;margin:0 0 20px;text-align:center}
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="card">
         <h1>🧾 CakePHP Fatture API</h1>
-        <p>Sistema de gestión de facturas - Backend API funcionando correctamente</p>
-        
         <div class="status">
-            <strong>✅ Estado:</strong> API funcionando correctamente<br>
-            <strong>🚀 Entorno:</strong> AWS Elastic Beanstalk<br>
-            <strong>📅 Última actualización:</strong> <?= date('Y-m-d H:i:s') ?>
-        </div>
-
-        <h2>📊 Endpoints de API disponibles:</h2>
-        <div class="endpoint">GET /health - Health check del sistema</div>
-        <div class="endpoint">GET /api/invoices.json - Lista de facturas</div>
-        <div class="endpoint">GET /api/invoices/stats.json - Estadísticas</div>
-        <div class="endpoint">GET /api/invoices/{id}.json - Factura específica</div>
-
-        <div class="grid">
-            <div class="card">
-                <h3>🔧 Stack Técnico</h3>
-                <ul>
-                    <li>CakePHP Framework</li>
-                    <li>PHP 8.2</li>
-                    <li>MySQL 8.0 (RDS)</li>
-                    <li>AWS Elastic Beanstalk</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>🎯 Características</h3>
-                <ul>
-                    <li>API REST completa</li>
-                    <li>CORS habilitado</li>
-                    <li>JSON responses</li>
-                    <li>Health monitoring</li>
-                </ul>
-            </div>
+            <strong>✅ API Funcionando Correctamente</strong><br>
+            📅 Deployado: <?= date('Y-m-d H:i:s T') ?><br>
+            🚀 AWS Elastic Beanstalk<br>
+            ⚡ PHP <?= phpversion() ?>
         </div>
         
-        <p style="text-align: center; color: #6c757d; margin-top: 40px;">
-            🌐 Ready para conectar con React Frontend
-        </p>
+        <div class="endpoints">
+            <strong>🌐 API Endpoints Disponibles:</strong>
+            <div class="endpoint">GET /health</div>
+            <div class="endpoint">GET /api/invoices.json</div>
+            <div class="endpoint">GET /api/invoices/stats.json</div>
+            <div class="endpoint">GET /api/invoices/{id}.json</div>
+        </div>
+        
+        <p style="text-align:center;"><strong>🎯 Ready para conectar con React Frontend</strong></p>
     </div>
 </body>
 </html>

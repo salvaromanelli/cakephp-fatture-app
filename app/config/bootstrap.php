@@ -180,11 +180,21 @@ unset($fullBaseUrl);
  * Apply the loaded configuration settings to their respective systems.
  * This will also remove the loaded config data from memory.
  */
-Cache::setConfig(Configure::consume('Cache'));
-ConnectionManager::setConfig(Configure::consume('Datasources'));
-TransportFactory::setConfig(Configure::consume('EmailTransport'));
-Mailer::setConfig(Configure::consume('Email'));
-Log::setConfig(Configure::consume('Log'));
+if (Configure::check('Cache')) {
+    Cache::setConfig(Configure::consume('Cache'));
+}
+if (Configure::check('Datasources')) {
+    ConnectionManager::setConfig(Configure::consume('Datasources'));
+}
+if (Configure::check('EmailTransport')) {
+    TransportFactory::setConfig(Configure::consume('EmailTransport'));
+}
+if (Configure::check('Email')) {
+    Mailer::setConfig(Configure::consume('Email'));
+}
+if (Configure::check('Log')) {
+    Log::setConfig(Configure::consume('Log'));
+}
 Security::setSalt(Configure::consume('Security.salt'));
 
 /*

@@ -2,14 +2,6 @@
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         3.0.0
- * @license       MIT License (https://opensource.org/licenses/mit-license.php)
  */
 
 /*
@@ -18,12 +10,6 @@
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
-
-/*
- * These definitions should only be edited if you have cake installed in
- * a directory layout other than the way it is distributed.
- * When using custom settings be sure to use the DS and do not add a trailing DS.
- */
 
 /*
  * The full path to the directory which holds "src", WITHOUT a trailing DS.
@@ -48,10 +34,6 @@ define('CONFIG', ROOT . DS . 'config' . DS);
 
 /*
  * File path to the webroot directory.
- *
- * To derive your webroot from your webserver change this to:
- *
- * `define('WWW_ROOT', rtrim($_SERVER['DOCUMENT_ROOT'], DS) . DS);`
  */
 define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
 
@@ -71,7 +53,7 @@ define('TMP', ROOT . DS . 'tmp' . DS);
 define('LOGS', ROOT . DS . 'logs' . DS);
 
 /*
- * Path to the cache files directory. It can be shared between hosts in a multi-server setup.
+ * Path to the cache files directory.
  */
 define('CACHE', TMP . 'cache' . DS);
 
@@ -81,11 +63,11 @@ define('CACHE', TMP . 'cache' . DS);
 define('RESOURCES', ROOT . DS . 'resources' . DS);
 
 /*
- * The absolute path to the "cake" directory, WITHOUT a trailing DS.
- *
- * CakePHP should always be installed with composer, so look there.
+ * CORREGIDO: Buscar vendor/ en la raíz del proyecto (un nivel arriba)
+ * Antes: ROOT . DS . 'vendor' (buscaba en app/vendor)
+ * Ahora: dirname(ROOT) . DS . 'vendor' (busca en project_root/vendor)
  */
-define('CAKE_CORE_INCLUDE_PATH', ROOT . DS . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
+define('CAKE_CORE_INCLUDE_PATH', dirname(ROOT) . DS . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
 
 /*
  * Path to the cake directory.
