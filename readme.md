@@ -1,6 +1,8 @@
-# CakePHP Fatture App
+# Fatture: invoice management with CakePHP
 
-A CakePHP application for invoice management (fatture) running in Docker containers.
+Invoice management app (*fatture* is Italian for invoices). The backend is a CakePHP 5 application running in Docker, with deployment scripts for AWS Elastic Beanstalk. The React frontend lives in [cakephp-fatture-frontend](https://github.com/salvaromanelli/cakephp-fatture-frontend).
+
+**Stack:** PHP 8.1+ · CakePHP 5 · MySQL · Docker Compose · AWS Elastic Beanstalk
 
 ## Requirements
 
@@ -22,6 +24,8 @@ A CakePHP application for invoice management (fatture) running in Docker contain
    - MySQL Database: localhost:3307
 
 ## Database Configuration
+
+These are the local Docker defaults, not production credentials. Real settings go in a `.env` file, which is not committed (see `app/config/.env.example`).
 
 - **Database**: `fatture`
 - **Username**: `cakeuser`
@@ -83,6 +87,10 @@ You can connect to the MySQL database using any MySQL client:
 - Username: cakeuser
 - Password: cakepass
 - Database: fatture
+
+## Deploying to AWS
+
+The scripts in `scripts/` and the templates in `aws/cloudformation/` create a demo stack on the AWS free tier (Elastic Beanstalk + RDS). They use a demo database password: change it before deploying anything real.
 
 ## Next Steps
 
